@@ -53,26 +53,26 @@ def hdr(enable):
         else:   #HDR off, want to enable
             time.sleep(1)
             pag.click(2600,922)
+            time.sleep(5)
     else:   #HDR on, want to disable
         if toggled_on:
             time.sleep(1)
-            pag.click()
+            pag.click(2604,790)
+            time.sleep(5)
 
 
 
 
 def hertz(enable):
-    #navigate to hertz
-    
-    pag.click(300,315)
+    #navigate to hertz  
+    pag.click(2777, 890) #click screen to allow scroll
+    time.sleep(.25)
+    pag.scroll(-1000)
     time.sleep(0.25)
-    pag.typewrite('display')
-    time.sleep(1)
-    pag.click(304,375)
-    time.sleep(0.75)
-    pag.click(1370,1675)
+    pag.click(970,855)
     time.sleep(0.5)
-    pag.click(2582,1130)
+    pag.click(2582,1080)
+    pag.click(2582,1150)
     if enable:
         pag.press('up')
     else:
@@ -86,10 +86,12 @@ def hertz(enable):
 def battery(level):  
     pag.click(300,315)
     pag.typewrite('battery')
+    time.sleep(0.5)
     pag.press('enter')
     time.sleep(.5)
     pag.press('enter')
     time.sleep(1)
+    pag.click(2500, 1060)
     pag.click(2500, 1060)
 
     if level == "power":
