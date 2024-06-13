@@ -6,7 +6,9 @@ import time
 
 #open Settings
 pag.press('win') 
+time.sleep(1)
 pag.typewrite('settings') 
+time.sleep(1)
 pag.press('enter')
 hwnd = win32gui.FindWindow(None, "Settings")
 win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
@@ -35,14 +37,23 @@ def hdr(enable):
 
 def hertz(enable):
     #navigate to hertz
-    pag.moveTo(300,315,0.5)
+    pag.moveTo(300,315,0.25)
     pag.click()
     pag.typewrite('display')
-    time.sleep(1)
+    pag.moveTo(304,375, 0.5)
+    pag.click()
+    pag.moveTo(1370,1675, 0.75)
+    pag.click()
+    pag.moveTo(2582,1130, 0.5)
+    pag.click()
+    if enable:
+        pag.press('up')
+    else:
+        pag.press('down')
     pag.press('enter')
-
-    
-        
+    time.sleep(3)
+    pag.press('tab')
+    pag.press('enter')
 
 
 def battery(enable):  
