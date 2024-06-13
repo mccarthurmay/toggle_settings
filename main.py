@@ -25,13 +25,13 @@ def OpenSettings():
 
 def hdr(enable):
     #navigate to HDR
-    pag.moveTo(300, 315, 0.5)
-    pag.click()
+    pag.click(300, 315)
+    time.sleep(0.25)
     pag.typewrite('HDR')
     time.sleep(2)
     pag.press('enter')
-    pag.moveTo(2603, 790, 0.5)
-    pag.click()
+    time.sleep(1)
+    pag.press('enter')
     time.sleep(2)
 
     screenshot = pag.screenshot(region=(1800, 460, 1900, 800))
@@ -51,9 +51,8 @@ def hdr(enable):
         if toggled_on: 
             pass
         else:   #HDR off, want to enable
-            pag.moveTo(2600,922)
             time.sleep(1)
-            pag.click()
+            pag.click(2600,922)
     else:   #HDR on, want to disable
         if toggled_on:
             time.sleep(1)
@@ -61,17 +60,19 @@ def hdr(enable):
 
 
 
+
 def hertz(enable):
     #navigate to hertz
-    pag.moveTo(300,315,0.25)
-    pag.click()
+    
+    pag.click(300,315)
+    time.sleep(0.25)
     pag.typewrite('display')
-    pag.moveTo(304,375, 0.5)
-    pag.click()
-    pag.moveTo(1370,1675, 0.75)
-    pag.click()
-    pag.moveTo(2582,1130, 0.5)
-    pag.click()
+    time.sleep(1)
+    pag.click(304,375)
+    time.sleep(0.75)
+    pag.click(1370,1675)
+    time.sleep(0.5)
+    pag.click(2582,1130)
     if enable:
         pag.press('up')
     else:
@@ -82,14 +83,34 @@ def hertz(enable):
     pag.press('enter')
 
 
-def battery(enable):  
-    if enable:
-        command = ""
-    else:
-        command = ""
-    subprocess.run(command, shell = True)
+def battery(level):  
+    pag.click(300,315)
+    pag.typewrite('battery')
+    pag.press('enter')
+    time.sleep(.5)
+    pag.press('enter')
+    time.sleep(1)
+    pag.click(2500, 1060)
 
-def fan(enable):
+    if level == "power":
+        pag.press('up')
+        pag.press('up')
+        pag.press('enter')
+
+    elif level == "performance":
+        pag.press('down')
+        pag.press('down')
+        pag.press('enter')
+    else:
+        pag.press('down')
+        pag.press('down')
+        pag.press('up')
+        pag.press('enter')
+
+
+
+
+def fan(level):
     if enable:
         command = ""
     else:
@@ -104,30 +125,37 @@ def target_mode(enable):
     subprocess.run(command, shell = True)
 
 def video():
-    #HDR on
-    #120HZ
-    #turn up quality in battery
+    OpenSettings()
+    hdr(True)
+    hertz(True)
+    battery('power')
     #whisper fan
     pass
 
 def education():
-    #HDR off
-    #60HZ
-    #turn down quality in battery
+    OpenSettings()
+    hdr(False)
+    hertz(False)
+    battery('power')
     #whisper fan
-    #turn on target mode in asus settings
+    #turn on target mode in asus settings (power)
     pass
 
 def quality():
-    #HDR on
-    #120HZ
-    #turn up quality in battery
+    OpenSettings()
+    hdr(True)
+    hertz(True)
+    battery('balanced')
     #standard fan
     pass
 
 def performance():
-    #HDR off
-    #60HZ
-    #turn down quality in battery
-    #performance fan
+    OpenSettings()
+    hdr(False)
+    hertz(False)
+    battery('performance')
+    #performance fan 
     pass    
+
+
+education()
