@@ -1,34 +1,49 @@
 import subprocess
+import win32gui
+import win32con
+import pyautogui as pag
+import time
 
-def run_command(command):
-    subprocess.run(command, shell=True)
+#open Settings
+pag.press('win') 
+pag.typewrite('settings') 
+pag.press('enter')
+hwnd = win32gui.FindWindow(None, "Settings")
+win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
+try:
+    win32gui.SetForegroundWindow(hwnd)
+except:
+    pass
+pag.click()
+time.sleep(2)
 
+def hdr(enable):
+    #navigate to HDR
+    pag.moveTo(300, 315, 0.5)
+    pag.click()
+    pag.typewrite('HDR')
+    time.sleep(2)
+    pag.press('enter')
 
-def toggle_hdr(enable):
-    if enable:
-        command = r"powershell -Command Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\MonitorDataStore\SDC416D0_19_07E5_72' -Name 'AdvancedColorEnabled' -Value 1"
-        print('1')
-        run_command(command)
-        nircmd_path = r'C:\Users\mccar\OneDrive\Desktop\toggle_settings\nircmd\nircmd.exe'
-        run_command(f'{nircmd_path} monitor off')
-        run_command(f'{nircmd_path} monitor on')
-    else:
-        command = r"powershell -Command Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\MonitorDataStore\SDC416D0_19_07E5_72' -Name 'AdvancedColorEnabled' -Value 0"
-        run_command(command)       
-        nircmd_path = r'C:\Users\mccar\OneDrive\Desktop\toggle_settings\nircmd\nircmd.exe'
-        run_command(f'{nircmd_path} monitor off')
-        run_command(f'{nircmd_path} monitor on')    
-
-toggle_hdr(False)
+    #toggle HDR
+    pag.moveTo(2603, 790, 0.5)
+    pag.click()
+    time.sleep(1)
+    pag.click()
 
 
 
 def hertz(enable):
-    if enable:
-        command = ""
-    else:
-        command = ""
-    subprocess.run(command, shell = True)
+    #navigate to hertz
+    pag.moveTo(300,315,0.5)
+    pag.click()
+    pag.typewrite('display')
+    time.sleep(1)
+    pag.press('enter')
+
+    
+        
+
 
 def battery(enable):  
     if enable:
