@@ -3,21 +3,25 @@ import win32gui
 import win32con
 import pyautogui as pag
 import time
+import cv2
+import numpy as np
 
 #open Settings
-pag.press('win') 
-time.sleep(1)
-pag.typewrite('settings') 
-time.sleep(1)
-pag.press('enter')
-hwnd = win32gui.FindWindow(None, "Settings")
-win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
-try:
-    win32gui.SetForegroundWindow(hwnd)
-except:
-    pass
-pag.click()
-time.sleep(2)
+def OpenSettings():
+    pag.press('win') 
+    time.sleep(1)
+    pag.typewrite('settings') 
+    time.sleep(1)
+    pag.press('enter')
+    hwnd = win32gui.FindWindow(None, "Settings")
+    win32gui.ShowWindow(hwnd, win32con.SW_MAXIMIZE)
+    try:
+        win32gui.SetForegroundWindow(hwnd)
+    except:
+        pass
+    pag.click()
+    time.sleep(2)
+
 
 def hdr(enable):
     #navigate to HDR
@@ -26,12 +30,34 @@ def hdr(enable):
     pag.typewrite('HDR')
     time.sleep(2)
     pag.press('enter')
-
-    #toggle HDR
     pag.moveTo(2603, 790, 0.5)
     pag.click()
-    time.sleep(1)
-    pag.click()
+    time.sleep(2)
+
+    screenshot = pag.screenshot(region=(1800, 460, 1900, 800))
+
+    #convert image to HSV
+    image = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2HSV)
+
+    #blue color range
+    lower_blue = np.array([90, 100, 100])  
+    upper_blue= np.array([170, 255, 255])
+
+    mask = cv2.inRange(image, lower_blue, upper_blue) #identifies pixels within blue color range
+
+    toggled_on = cv2.countNonZero(mask) > 0 #check if blue color exists (white pixels in mask indicate blue)
+    
+    if enable:  #HDR on, want to enable
+        if toggled_on: 
+            pass
+        else:   #HDR off, want to enable
+            pag.moveTo(2600,922)
+            time.sleep(1)
+            pag.click()
+    else:   #HDR on, want to disable
+        if toggled_on:
+            time.sleep(1)
+            pag.click()
 
 
 
